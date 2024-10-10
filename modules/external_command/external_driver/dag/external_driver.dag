@@ -1,0 +1,11 @@
+# Define all coms in DAG streaming.
+module_config {
+  module_library : "modules/external_command/external_driver/libexternal_driver_component.so"
+  timer_components {
+    class_name : "ExternalDriver"
+    config {
+      name: "external_driver_component"
+      interval: 1000 # milliseconds
+    }
+  }
+}
