@@ -1016,9 +1016,7 @@ bool UsbCam::process_image(void* src, int len, CameraImagePtr dest) {
 #ifndef __aarch64__
             yuyv2rgb_avx((unsigned char*)src, (unsigned char*)dest->image, dest->width * dest->height);
 #else
-            // convert_yuv_to_rgb_buffer((unsigned char*)src,
-            //                           (unsigned char*)dest->image, dest->width,
-            //                           dest->height);
+            convert_yuv_to_rgb_buffer((unsigned char*)src, (unsigned char*)dest->image, dest->width, dest->height);
 
 #endif
         } else {
@@ -1134,7 +1132,7 @@ bool UsbCam::wait_for_device() {
 }
 
 #ifdef __aarch64__
-int UsbCam::convert_yuv_to_rgb_pixel_cuda(int y, int u, int v) {
+int UsbCam::convert_yuv_to_rgb_pixel(int y, int u, int v) {
     unsigned int pixel32 = 0;
     unsigned char* pixel = (unsigned char*)&pixel32;
     int r, g, b;
@@ -1159,11 +1157,7 @@ int UsbCam::convert_yuv_to_rgb_pixel_cuda(int y, int u, int v) {
     return pixel32;
 }
 
-int UsbCam::convert_yuv_to_rgb_buffer_cuda(
-        unsigned char* yuv,
-        unsigned char* rgb,
-        unsigned int width,
-        unsigned int height) {
+int UsbCam::convert_yuv_to_rgb_buffer(unsigned char* yuv, unsigned char* rgb, unsigned int width, unsigned int height) {
     unsigned int in, out = 0;
     unsigned int pixel_16;
     unsigned char pixel_24[3];
